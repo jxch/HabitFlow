@@ -59,10 +59,11 @@ button:focus-visible {
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    text-align: left;
 }
 
 @media (prefers-color-scheme: light) {
@@ -77,3 +78,35 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.view-container {
+    padding: 0;
+    margin: 0;
+}
+
+.page-full {
+    height: 100vh;
+    width: 100vw;
+}
+
+.page-full-height {
+    height: 100vh;
+}
+
+.page-full-width {
+    width: 100vh;
+}
+
+.container-full {
+    height: 100%;
+    width: 100%;
+}
+
+.container-full-height {
+    height: 100%;
+}
+
+.container-full-width {
+    width: 100%;
+}
+
