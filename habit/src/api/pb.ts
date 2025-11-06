@@ -15,3 +15,5 @@ export const apis = {
     login: async (email : string, pwd: string) => await pb.collection('users').authWithPassword(email, pwd),
 }
 
+pb.collection('users').authWithPassword("xicheng.jiang.1@gmail.com", "2fUdJ7KcFEgdxwe")
+

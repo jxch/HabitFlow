@@ -64,7 +64,7 @@ const columns: any[] = createColumns();
 
 const data: any[] = []
 
-apis.view_habit_clock_number.getFullList().then((res) => {
+apis.habit_view_clock_number.getFullList().then((res) => {
   console.log(res)
 })
 

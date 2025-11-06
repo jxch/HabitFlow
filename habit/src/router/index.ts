@@ -32,7 +32,7 @@ const routes: any[] = [
         label: "添加习惯",
         key: 'add',
         icon: renderIcon(Add12Filled),
-        // component: () => import('../view/KLineExamView.vue')
+        component: () => import('../view/HabitView.vue')
     },
     {
         path: '/clock',
@@ -46,42 +46,42 @@ const routes: any[] = [
         label: "热力图",
         key: 'heatmap',
         icon: renderIcon(HeatMap),
-        // component: () => import('../view/KLineExamView.vue')
+        component: () => import('../view/HabitView.vue')
     },
     {
         path: '/calendar',
         label: "日历图",
         key: 'calendar',
         icon: renderIcon(Calendar),
-        // component: () => import('../view/KLineExamView.vue')
+        component: () => import('../view/HabitView.vue')
     },
     {
         path: '/analysis',
         label: "数据分析",
         key: 'analysis',
         icon: renderIcon(Pulse20Regular),
-        // component: () => import('../view/KLineExamView.vue')
+        component: () => import('../view/HabitView.vue')
     },
     {
         path: '/tagManagement',
         label: "标签管理",
         key: 'tagManagement',
         icon: renderIcon(TagMultiple16Regular),
-        // component: () => import('../view/KLineExamView.vue')
+        component: () => import('../view/HabitView.vue')
     },
     {
         path: '/archive',
         label: "归档",
         key: 'archive',
         icon: renderIcon(ArchiveMultiple16Regular),
-        // component: () => import('../view/KLineExamView.vue')
+        component: () => import('../view/HabitView.vue')
     },
     {
         path: '/setting',
         label: "设置",
         key: 'setting',
         icon: renderIcon(ManageAccountsOutlined),
-        // component: () => import('../view/KLineExamView.vue')
+        component: () => import('../view/HabitView.vue')
     },
 ]
 

@@ -19,13 +19,20 @@ const menuOptions = ref<any[]>(menus)
         @expand="false"
     >
       <n-menu
-          v-model:value="activeKey"
           :collapsed="true"
           :collapsed-width="64"
           :collapsed-icon-size="22"
           :options="menuOptions"
           class="page-full-height"
       />
+<!--      <n-menu-->
+<!--          v-model:value="activeKey"-->
+<!--          :collapsed="true"-->
+<!--          :collapsed-width="64"-->
+<!--          :collapsed-icon-size="22"-->
+<!--          :options="menuOptions"-->
+<!--          class="page-full-height"-->
+<!--      />-->
     </n-layout-sider>
     <n-layout>
       <router-view class="view-container"/>
