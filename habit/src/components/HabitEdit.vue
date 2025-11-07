@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import {ref, toRaw} from 'vue'
-import type {FormInst} from 'naive-ui'
+import type {FormInst, useMessage, useLoadingBar} from 'naive-ui'
 import {randomRgbaStr} from '../util/chromaUtil.ts'
 
 import {apis} from '../api/pb.ts'
+import {habitRefreshEvent} from '../bus/bm.ts'
+
+const message = useMessage();
+const loadingBar = useLoadingBar();
 
 const habitRef = ref<FormInst | null>(null)
 const habit = ref({
@@ -16,10 +20,15 @@ const habit = ref({
   archive: false
 });
 
+let createHabitLoading = ref(false)
+
 async function createHabit() {
   await habitRef.value?.validate();
+  createHabitLoading.value = true
   apis.habit_base.create(toRaw(habit.value)).then(res => {
-    console.log(res)
+    createHabitLoading.value = false
+    message.success(`${res.habit_name}已添加`);
+    habitRefreshEvent();
   })
 }
 
@@ -60,6 +69,7 @@ const cycleButtons = ref([
 ])
 
 let currentCycleButton: any = undefined;
+
 function cycleButtonClick(button: any) {
   if (button.type === 'primary') {
     button.type = 'tertiary'
@@ -120,7 +130,7 @@ function cycleButtonClick(button: any) {
 
       <n-form-item>
         <n-flex justify="end">
-          <n-button round type="primary" :onclick="createHabit">添加</n-button>
+          <n-button round type="primary" :onclick="createHabit" :loading="createHabitLoading">保存</n-button>
         </n-flex>
       </n-form-item>
 

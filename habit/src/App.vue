@@ -6,9 +6,13 @@ import {darkTheme} from 'naive-ui'
 
 <template>
   <n-config-provider :theme="darkTheme">
-    <n-notification-provider>
-      <AppView/>
-    </n-notification-provider>
+    <n-message-provider>
+      <n-notification-provider>
+        <n-loading-bar-provider>
+          <AppView/>
+        </n-loading-bar-provider>
+      </n-notification-provider>
+    </n-message-provider>
   </n-config-provider>
 </template>
 

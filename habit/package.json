@@ -18,6 +18,7 @@
     "chroma-js": "^3.1.2",
     "dayjs": "^1.11.19",
     "echarts": "^6.0.0",
+    "mitt": "^3.0.1",
     "pocketbase": "^0.26.3",
     "unplugin-auto-import": "^20.2.0",
     "unplugin-vue-components": "^30.0.0",
