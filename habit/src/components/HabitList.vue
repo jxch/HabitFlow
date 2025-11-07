@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, h, type Component} from 'vue'
+import {ref, h} from 'vue'
 import {NSpace, useMessage, useLoadingBar} from 'naive-ui'
 import HabitAvatarText from "../components/HabitAvatarText.vue";
 import TableButton from "../components/TableButton.vue";
@@ -96,7 +96,7 @@ const columns = ref([
   },
   {title: '描述', key: 'description'},
   {
-    title: '', key: 'option', render(row: any) {
+    title: '', key: 'operation', render(row: any) {
       return h(NSpace, {justify: 'end'}, createTableButtons(row))
     }
   },

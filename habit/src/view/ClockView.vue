@@ -1,10 +1,32 @@
 <script setup lang="ts">
-import {h} from 'vue'
-import {NButton} from 'naive-ui'
+import {h, ref, computed, toRaw} from 'vue'
+import {NSpace, useMessage, useLoadingBar} from 'naive-ui'
+
+import {
+  ArrowCounterclockwise20Filled
+} from '@vicons/fluent'
+import {
+  CheckmarkDoneOutline
+} from '@vicons/ionicons5'
+
+import ClockCheckLogo from "../components/ClockCheckLogo.vue";
+import TableButton from "../components/TableButton.vue";
+import HabitAvatarText from "../components/HabitAvatarText.vue";
 
 import {getRecentWeeks} from '../util/dayUtil.ts'
-import ClockCheckLogo from "../components/ClockCheckLogo.vue";
 import {apis} from '../api/pb.ts'
+import {onHabitRefreshEvent, habitClockEvent, onHabitClockEvent} from "../bus/bm.ts";
+
+const message = useMessage()
+const loadingBar = useLoadingBar()
+
+const habitClockData = ref({
+  habit: null,
+});
+const habitClock = computed(() => ({
+  ...habitClockData.value,
+  user: apis.currentUserId,
+}));
 
 function createColumns() {
   let dates = getRecentWeeks({dateFormat: 'DD'});
@@ -13,43 +35,60 @@ function createColumns() {
     return {
       title: d.weekdayNumberName,
       key: d.date,
-      children: [{title: d.dateFormat,}],
-      render(row: any) {
-        return h(ClockCheckLogo, row)
-      }
+      align: 'center',
+      children: [
+        {
+          title: d.dateFormat,
+          align: 'center',
+          render(row: any) {
+            return h(ClockCheckLogo, {
+              date: d.date.format('YYYY-MM-DD'),
+              clock_days: row.clock_days,
+              numbers: row.numbers,
+              color: row.color,
+              frequency: row.frequency,
+              cycle_day: row.cycle_day,
+            })
+          },
+        }
+      ],
     }
   })
 
   const columns: any[] = [
     {title: '', key: 'progressChart'},
     {title: '', key: 'progressUnit'},
-    {title: '', key: 'habitLogo'},
-    {title: '习惯', key: 'habitName'},
+    {
+      title: '', key: 'habitLogo', render(row: any) {
+        return h(HabitAvatarText, {backgroundColor: row.color, text: row.habit_name})
+      }
+    },
+    {
+      title: '习惯', key: 'habit_name', render(row: any) {
+        return h('n-p', {style: `color: ${row.color}; font-weight: bold;`}, row.habit_name)
+      }
+    },
   ]
   const optionColumns: any[] = [
     {
-      title: '', key: 'clock', render(row: any) {
-        return h(NButton, {size: 'small'})
-      }
-    },
-    {
-      title: '', key: 'undo', render(row: any) {
-        return h(NButton, {size: 'small'})
-      }
-    },
-    {
-      title: '', key: 'edit', render(row: any) {
-        return h(NButton, {size: 'small'})
-      }
-    },
-    {
-      title: '', key: 'archive', render(row: any) {
-        return h(NButton, {size: 'small'})
-      }
-    },
-    {
-      title: '', key: 'delete', render(row: any) {
-        return h(NButton, {size: 'small'})
+      title: '', key: 'operation', render(row: any) {
+        return h(NSpace, {justify: "end"}, [
+          h(TableButton, {
+            title: '打卡', backgroundColor: row.color, icon: CheckmarkDoneOutline, click: () => {
+              habitClock.value.habit = row.id;
+              console.log(toRaw(habitClock.value))
+              apis.habit_clock.create(toRaw(habitClock.value)).then(res => {
+                message.success("打卡 +1");
+                habitClockEvent();
+              })
+            }
+          }),
+          h(TableButton, {
+            title: '重做', backgroundColor: "gray", icon: ArrowCounterclockwise20Filled, click: () => {
+              message.success("今日重做")
+            }
+          }),
+        ])
       }
     },
   ]
@@ -60,14 +99,28 @@ function createColumns() {
   return columns;
 }
 
-const columns: any[] = createColumns();
+const columns = ref<any>(createColumns());
 
-const data: any[] = []
+const data = ref<any>([])
 
-apis.habit_view_clock_number.getFullList().then((res) => {
-  console.log(res)
+function refresh() {
+  loadingBar.start();
+  apis.habit_view_clock.getFullList().then((res) => {
+    data.value = res
+  }).catch(() => {
+    loadingBar.error();
+  }).finally(() => {
+    loadingBar.finish();
+  });
+}
+
+refresh();
+onHabitRefreshEvent(() => {
+  refresh();
+});
+onHabitClockEvent(() => {
+  refresh();
 })
-
 </script>
 
 <template>
@@ -76,7 +129,6 @@ apis.habit_view_clock_number.getFullList().then((res) => {
       :data="data"
       :pagination="false"
       :bordered="false"
-
   />
 </template>
 

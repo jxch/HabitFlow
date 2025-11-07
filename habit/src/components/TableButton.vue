@@ -46,6 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
             :color="props.backgroundColor"
             :style="{color: props.color}"
             @click="props.click"
+            :focusable="false"
             circle>
     <template #icon>
       <n-icon>

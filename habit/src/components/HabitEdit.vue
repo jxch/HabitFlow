@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import {ref, toRaw} from 'vue'
-import type {FormInst, useMessage, useLoadingBar} from 'naive-ui'
+import {ref, toRaw, computed} from 'vue'
+import type {FormInst, useMessage} from 'naive-ui'
 import {randomRgbaStr} from '../util/chromaUtil.ts'
 
 import {apis} from '../api/pb.ts'
 import {habitRefreshEvent} from '../bus/bm.ts'
 
 const message = useMessage();
-const loadingBar = useLoadingBar();
 
 const habitRef = ref<FormInst | null>(null)
-const habit = ref({
-  user: 'j3w5t986wl55u7g',
+const habitData = ref({
   habit_name: null,
   description: null,
   frequency: 1,
@@ -19,6 +17,10 @@ const habit = ref({
   color: randomRgbaStr(),
   archive: false
 });
+const habit = computed(() => ({
+  ...habitData.value,
+  user: apis.currentUserId,
+}));
 
 let createHabitLoading = ref(false)
 
@@ -69,7 +71,6 @@ const cycleButtons = ref([
 ])
 
 let currentCycleButton: any = undefined;
-
 function cycleButtonClick(button: any) {
   if (button.type === 'primary') {
     button.type = 'tertiary'

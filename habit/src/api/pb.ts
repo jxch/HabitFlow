@@ -9,10 +9,13 @@ export const apis = {
     habit_tag_link: pb.collection('habit_tag_link'),
     habit_clock: pb.collection('habit_clock'),
 
+    habit_view_clock: pb.collection('habit_view_clock'),
     habit_view_clock_number: pb.collection('habit_view_clock_number'),
     habit_view_tag_clock_number: pb.collection('habit_view_tag_clock_number'),
 
-    login: async (email : string, pwd: string) => await pb.collection('users').authWithPassword(email, pwd),
+    login: async (email: string, pwd: string) => await pb.collection('users').authWithPassword(email, pwd),
+    currentUserId: pb.authStore.isValid && pb.authStore.record ? pb.authStore.record.id : null,
+    currentUser: pb.authStore.isValid && pb.authStore.record ? pb.authStore.record : null,
 }
 
 pb.collection('users').authWithPassword("xicheng.jiang.1@gmail.com", "2fUdJ7KcFEgdxwe")
