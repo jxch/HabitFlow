@@ -74,7 +74,7 @@ const routes: any[] = [
         label: "归档",
         key: 'archive',
         icon: renderIcon(ArchiveMultiple16Regular),
-        component: () => import('../view/HabitView.vue')
+        component: () => import('../view/HabitArchiveView.vue')
     },
     {
         path: '/setting',
