@@ -5,7 +5,7 @@ interface Props {
   color: string,
   frequency?: number,
   cycle_day?: number,
-  number: number,
+  todayNumber: number,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -14,7 +14,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const percentage = computed(() => {
-  return (props.number / (props.frequency / props.cycle_day) * 100).toFixed(0);
+  if (props.todayNumber == 0) {
+    return 0;
+  }
+
+  return (props.todayNumber / (props.frequency / props.cycle_day) * 100).toFixed(0);
 })
 </script>
 
@@ -25,7 +29,6 @@ const percentage = computed(() => {
       :percentage="percentage"
       :stroke-width="15"
       style="width: 26px;"
-      :size="small"
       :title="`今日进度：${percentage}%`"
   >
     <span style="text-align: center;"></span>

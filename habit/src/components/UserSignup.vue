@@ -28,7 +28,7 @@ const rules = {
     trigger: ['blur', 'input'],
     message: '请输入邮箱'
   }, {
-    validator: (rule, value) => {
+    validator: (_rule: any, value: any) => {
       return value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     },
     trigger: ['input', 'blur'],
@@ -39,7 +39,7 @@ const rules = {
     trigger: ['blur', 'input'],
     message: '请输入密码'
   }, {
-    validator: (rule, value) => {
+    validator: (_rule: any, value: any) => {
       return value && value.length >= 8;
     },
     trigger: ['blur', 'input'],
@@ -50,7 +50,7 @@ const rules = {
     trigger: ['blur', 'input'],
     message: '请再次输入密码',
   }, {
-    validator: (rule, value) => {
+    validator: (_rule: any, value: any) => {
       return value === user.value.password
     },
     trigger: ['blur', 'input'],

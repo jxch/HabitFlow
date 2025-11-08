@@ -7,7 +7,7 @@ interface Props {
   color?: string,
   backgroundColor: string,
   icon: Component,
-  confirmComponent?: Component,
+  confirmComponent?: Component | null,
   confirmShowIcon?: boolean,
   click?: Function,
   confirm?: boolean,

@@ -26,4 +26,7 @@ export default defineConfig({
             resolvers: [NaiveUiResolver()]
         })
     ],
+    build: {
+        outDir: 'dist',
+    }
 })

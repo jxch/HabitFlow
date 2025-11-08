@@ -34,14 +34,14 @@ pb.authStore.onChange(() => {
   habitClock.value.user = apis.userid();
 })
 
-function redoTodayClock(habitId) {
+function redoTodayClock(habitId: any) {
   business.redoTodayClock(habitId).then(() => {
     message.success("今日重做");
     habitRefreshEvent();
   });
 }
 
-function clockCustom(habitId, createdDate) {
+function clockCustom(habitId: any, createdDate: any) {
   habitClock.value.habit = habitId;
   habitClock.value.clock_date = createdDate;
   loadingBar.start();
@@ -55,7 +55,7 @@ function clockCustom(habitId, createdDate) {
   });
 }
 
-function clock(habitId) {
+function clock(habitId: any) {
   clockCustom(habitId, new Date());
 }
 
@@ -94,7 +94,7 @@ function createColumns() {
           color: row.color,
           frequency: row.frequency,
           cycle_day: row.cycle_day,
-          number: (row.numbers + '').split(',')[0],
+          todayNumber: Number((row.numbers + '').split(',')[0]),
         })
       }
     },

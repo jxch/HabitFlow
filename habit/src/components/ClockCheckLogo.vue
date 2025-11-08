@@ -54,7 +54,7 @@ const clockDates = ref<string>('');
 async function getClockHistory() {
   loadingBar.start();
   const items = await business.getClock(props.habit_id, props.date);
-  if (items?.length > 0) {
+  if (items && items.length > 0) {
     clockHistory.value = items;
     clockDates.value = items.map(item => dayjs(item.clock_date).format('YYYY-MM-DD HH:mm:ss')).join('<br/>');
   }
