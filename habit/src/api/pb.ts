@@ -16,6 +16,20 @@ export const apis = {
     login: async (email: string, pwd: string) => await pb.collection('users').authWithPassword(email, pwd),
     currentUserId: pb.authStore.isValid && pb.authStore.record ? pb.authStore.record.id : null,
     currentUser: pb.authStore.isValid && pb.authStore.record ? pb.authStore.record : null,
+
+    batch: async (all: (batch: any) => void) => {
+        const batch = pb.createBatch();
+        all(batch)
+        return await batch.send();
+    },
+}
+
+export const batchApis = {
+    users: (batch: any) => batch.collection('users'),
+    habit_base: (batch: any) => batch.collection('habit_base'),
+    habit_tag_base: (batch: any) => batch.collection('habit_tag_base'),
+    habit_tag_link: (batch: any) => batch.collection('habit_tag_link'),
+    habit_clock: (batch: any) => batch.collection('habit_clock'),
 }
 
 pb.collection('users').authWithPassword("xicheng.jiang.1@gmail.com", "2fUdJ7KcFEgdxwe")

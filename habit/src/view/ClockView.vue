@@ -13,6 +13,7 @@ import ClockCheckLogo from "../components/ClockCheckLogo.vue";
 import TableButton from "../components/TableButton.vue";
 import HabitAvatarText from "../components/HabitAvatarText.vue";
 
+import dayjs from 'dayjs';
 import {getRecentWeeks} from '../util/dayUtil.ts'
 import {apis} from '../api/pb.ts'
 import {onHabitRefreshEvent, habitClockEvent, onHabitClockEvent} from "../bus/bm.ts";
@@ -72,23 +73,38 @@ function createColumns() {
   const optionColumns: any[] = [
     {
       title: '', key: 'operation', render(row: any) {
-        return h(NSpace, {justify: "end"}, [
-          h(TableButton, {
-            title: '打卡', backgroundColor: row.color, icon: CheckmarkDoneOutline, click: () => {
-              habitClock.value.habit = row.id;
-              console.log(toRaw(habitClock.value))
-              apis.habit_clock.create(toRaw(habitClock.value)).then(res => {
-                message.success("打卡 +1");
-                habitClockEvent();
-              })
-            }
-          }),
-          h(TableButton, {
-            title: '重做', backgroundColor: "gray", icon: ArrowCounterclockwise20Filled, click: () => {
-              message.success("今日重做")
-            }
-          }),
-        ])
+        return h(NSpace, {justify: "end"},
+            {
+              default: () => [
+                h(TableButton, {
+                  title: '打卡', backgroundColor: row.color, icon: CheckmarkDoneOutline, click: () => {
+                    habitClock.value.habit = row.id;
+                    apis.habit_clock.create(toRaw(habitClock.value)).then(res => {
+                      message.success("打卡 +1");
+                      habitClockEvent();
+                    })
+                  }
+                }),
+                h(TableButton, {
+                  title: '重做', backgroundColor: "gray", icon: ArrowCounterclockwise20Filled, click: () => {
+                    apis.habit_view_clock_number.getFullList({
+                      filter: `habit_id = '${row.id}' && clock_day = '${dayjs().format('YYYY-MM-DD')}'`
+                    }).then(res => {
+                      if (res == null || res == []) {
+                        return;
+                      }
+                      for (let item of res) {
+                        Promise.all((item.clock_ids + '').split(',')
+                            .map(id => apis.habit_clock.delete(id))).then(r => {
+                          message.success("今日重做")
+                          habitClockEvent();
+                        })
+                      }
+                    })
+                  }
+                }),
+              ]
+            })
       }
     },
   ]
