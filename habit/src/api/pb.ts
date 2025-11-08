@@ -16,6 +16,11 @@ export const apis = {
 
     logout: () => pb.authStore.clear(),
     login: async (email: string, pwd: string) => await pb.collection('users').authWithPassword(email, pwd),
+
+    isLoggedIn: () => pb.authStore.isValid && pb.authStore.record,
+    userid: () => pb.authStore.record ? pb.authStore.record.id : null,
+    username: () => pb.authStore.record ? pb.authStore.record.name : null,
+    userEmail: () => pb.authStore.record ? pb.authStore.record.email : null,
 }
 
 export const batchApis = {

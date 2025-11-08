@@ -22,10 +22,10 @@ const loadingBar = useLoadingBar()
 
 const habitClock = ref({
   habit: null,
-  user: pb.authStore.record ? pb.authStore.record.id : null,
+  user: apis.userid(),
 });
 pb.authStore.onChange(() => {
-  habitClock.value.user = pb.authStore.record.id;
+  habitClock.value.user = apis.userid();
 })
 
 function redoTodayClock(habitId) {

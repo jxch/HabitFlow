@@ -7,14 +7,14 @@ import HabitAvatarText from "./HabitAvatarText.vue";
 const message = useMessage();
 
 const currentUser = ref<any>({
-  isLoggedIn: pb.authStore.isValid,
-  username: pb.authStore.record ? pb.authStore.record.name : null,
-  userEmail: pb.authStore.record ? pb.authStore.record.email : null,
+  isLoggedIn: apis.isLoggedIn(),
+  username: apis.username(),
+  userEmail: apis.userEmail(),
 });
 pb.authStore.onChange(() => {
-  currentUser.value.isLoggedIn = pb.authStore.isValid;
-  currentUser.value.username = pb.authStore.record.name;
-  currentUser.value.userEmail = pb.authStore.record.email;
+  currentUser.value.isLoggedIn = apis.isLoggedIn();
+  currentUser.value.username = apis.username();
+  currentUser.value.userEmail = apis.userEmail();
 })
 
 function logout() {

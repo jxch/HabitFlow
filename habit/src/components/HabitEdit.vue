@@ -17,10 +17,10 @@ const habit = ref({
   cycle_day: 1,
   color: randomRgbaStr(),
   archive: false,
-  user: pb.authStore.record ? pb.authStore.record.id : null,
+  user: apis.userid(),
 });
 pb.authStore.onChange(() => {
-  habit.value.user = pb.authStore.record.id;
+  habit.value.user = apis.userid();
 })
 
 let createHabitLoading = ref(false)
