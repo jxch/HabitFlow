@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {ref, toRaw, computed} from 'vue'
-import type {FormInst, useMessage} from 'naive-ui'
+import type {FormInst} from 'naive-ui'
+import {useMessage} from 'naive-ui'
 import {randomRgbaStr} from '../util/chromaUtil.ts'
 
 import {apis} from '../api/pb.ts'
@@ -71,6 +72,7 @@ const cycleButtons = ref([
 ])
 
 let currentCycleButton: any = undefined;
+
 function cycleButtonClick(button: any) {
   if (button.type === 'primary') {
     button.type = 'tertiary'
@@ -138,7 +140,3 @@ function cycleButtonClick(button: any) {
     </n-form>
   </n-card>
 </template>
-
-<style scoped>
-
-</style>

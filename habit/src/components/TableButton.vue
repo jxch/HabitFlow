@@ -56,6 +56,3 @@ const props = withDefaults(defineProps<Props>(), {
   </n-button>
 </template>
 
-<style scoped>
-
-</style>

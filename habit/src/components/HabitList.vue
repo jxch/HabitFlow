@@ -132,6 +132,3 @@ onHabitRefreshEvent(() => {
   />
 </template>
 
-<style scoped>
-
-</style>

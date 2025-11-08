@@ -146,6 +146,3 @@ onHabitClockEvent(() => {
   />
 </template>
 
-<style scoped>
-
-</style>

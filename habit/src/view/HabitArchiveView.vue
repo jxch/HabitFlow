@@ -6,6 +6,3 @@ import HabitList from "../components/HabitList.vue";
   <HabitList :archive="true"/>
 </template>
 
-<style scoped>
-
-</style>

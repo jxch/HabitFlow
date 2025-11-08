@@ -11,12 +11,8 @@ const props = withDefaults(defineProps<Props>(), {color: 'snow'});
 <template>
   <n-avatar :style="{
       color: props.color,
-      backgroundColor: props.backgroundColor,
+      backgroundColor: props.backgroundColor
     }">
     <b>{{ props.text.substring(0, 1) }}</b>
   </n-avatar>
 </template>
-
-<style scoped>
-
-</style>

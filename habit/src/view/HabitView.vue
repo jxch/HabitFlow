@@ -14,6 +14,3 @@ import HabitList from "../components/HabitList.vue";
   </n-split>
 </template>
 
-<style scoped>
-
-</style>

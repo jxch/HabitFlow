@@ -51,7 +51,3 @@ function click() {
     </n-icon>
   </n-button>
 </template>
-
-<style scoped>
-
-</style>
