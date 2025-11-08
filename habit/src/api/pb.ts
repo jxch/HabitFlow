@@ -77,7 +77,8 @@ export const business = {
         let allIn = items.flatMap(item =>
             String(item.clock_ids || '').split(',')).join("' || id = '");
         return apis.habit_clock.getFullList({
-            filter: `id = '${allIn}'`
+            filter: `id = '${allIn}'`,
+            sort: '-clock_date',
         });
     },
     deleteHabit: async (habit_id: string) => {

@@ -100,7 +100,8 @@ function createColumns() {
     },
     {
       title: '', key: 'progress', align: 'center', render(row: any) {
-        return h('span', {style: {color: row.color}, title: `目标频率：${row.frequency}次/${row.cycle_day}天`}, `${(row.numbers + '').split(',')[0]}/${row.frequency}`);
+        return h('span', {style: {color: row.color}, title: `目标频率：${row.frequency}次/${row.cycle_day}天`},
+            `${(row.numbers + '').split(',').slice(0, 8).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${row.frequency}`);
       }
     },
     {
