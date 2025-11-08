@@ -131,12 +131,9 @@ function cycleButtonClick(button: any) {
         <n-input type="textarea" v-model:value="habit.description" placeholder="新习惯"/>
       </n-form-item>
 
-      <n-form-item>
-        <n-flex justify="end">
-          <n-button round type="primary" :onclick="createHabit" :loading="createHabitLoading">保存</n-button>
-        </n-flex>
-      </n-form-item>
-
+      <n-flex justify="end">
+        <n-button round type="primary" :onclick="createHabit" :loading="createHabitLoading">保存</n-button>
+      </n-flex>
     </n-form>
   </n-card>
 </template>
