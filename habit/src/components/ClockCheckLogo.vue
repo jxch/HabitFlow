@@ -21,7 +21,7 @@ function dateIndex(): number {
     return -1;
   }
 
-  return props.clock_days.split(",").indexOf(props.date) as number;
+  return (props.clock_days || '').split(",").indexOf(props.date) as number;
 }
 
 const number = computed(() => {
@@ -31,11 +31,10 @@ const number = computed(() => {
   return Number((props.numbers + '').split(",")[dateIndex()]);
 });
 
-
 const clock = computed(() => ({
-  isClock: (props.clock_days || '').includes(props.date || ''),
+  isClock: number.value > 0,
   clockColorStyle: props.color,
-  depth: 5 - Math.min(Math.floor(number.value / (props.frequency / props.cycle_day)), 4) as any,
+  depth: 5 - Math.min(Math.floor((number.value / 2) / (props.frequency / props.cycle_day)), 4) as any,
   number: number.value,
 }));
 
