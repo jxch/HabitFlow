@@ -15,6 +15,7 @@ import {
 import ClockCheckLogo from "../components/ClockCheckLogo.vue";
 import TableButton from "../components/TableButton.vue";
 import HabitAvatarText from "../components/HabitAvatarText.vue";
+import TableProgress from "../components/TableProgress.vue";
 
 import dayjs from 'dayjs';
 import {getRecentWeeks} from '../util/dayUtil.ts'
@@ -87,16 +88,29 @@ function createColumns() {
   })
 
   const columns: any[] = [
-    {title: '', key: 'progressChart'},
-    {title: '', key: 'progressUnit'},
     {
-      title: '', key: 'habitLogo', render(row: any) {
+      title: '', key: 'progressChart', align: 'center', render(row: any) {
+        return h(TableProgress, {
+          color: row.color,
+          frequency: row.frequency,
+          cycle_day: row.cycle_day,
+          number: (row.numbers + '').split(',')[0],
+        })
+      }
+    },
+    {
+      title: '', key: 'progress', align: 'center', render(row: any) {
+        return h('span', {style: {color: row.color}, title: `目标频率：${row.frequency}次/${row.cycle_day}天`}, `${(row.numbers + '').split(',')[0]}/${row.frequency}`);
+      }
+    },
+    {
+      title: '', key: 'habitLogo', align: 'center', render(row: any) {
         return h(HabitAvatarText, {backgroundColor: row.color, text: row.habit_name})
       }
     },
     {
-      title: '习惯', key: 'habit_name', render(row: any) {
-        return h('n-p', {style: `color: ${row.color}; font-weight: bold;`}, row.habit_name)
+      title: '习惯', key: 'habit_name', align: 'center', render(row: any) {
+        return h('n-p', {style: `color: ${row.color}; font-weight: bold;`, title: row.description}, row.habit_name)
       }
     },
   ]

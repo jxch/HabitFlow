@@ -29,7 +29,9 @@ const avatar = computed(() => ({
 </script>
 
 <template>
-  <n-avatar :size="props.size" :style="avatar.style" :circle="props.circle">
-    <b :style="{color: avatar.textColor}">{{ avatar.text }}</b>
-  </n-avatar>
+  <n-flex justify="center">
+    <n-avatar :size="props.size" :style="avatar.style" :circle="props.circle">
+      <b :style="{color: avatar.textColor}">{{ avatar.text }}</b>
+    </n-avatar>
+  </n-flex>
 </template>

@@ -94,30 +94,32 @@ onHabitRefreshEvent(() => {
 </script>
 
 <template>
-  <n-popconfirm :show-icon="false" v-if="number">
-    <template #trigger>
-      <n-button text style="font-size: 24px" :focusable="false" @click="getClockHistory" :title="number">
-        <n-icon :color="clock.isClock ? clock.clockColorStyle : 'gray'" :depth="clock.depth">
-          <CheckSquareRegular v-if="clock.todyDone"/>
-          <SquareRegular v-if="!clock.todyDone"/>
-        </n-icon>
-      </n-button>
-    </template>
-    <template #action>
-      <n-button size="tiny" @click="redoClock">撤销一次</n-button>
-      <n-button size="tiny" type="error" @click="clearClockHistory">清空</n-button>
-    </template>
-    <n-space vertical>
-      <n-p v-for="item in clockHistory" :key="item.id">
-        {{ dayjs(item.clock_date).format('YYYY-MM-DD HH:mm:ss') }}
-      </n-p>
-    </n-space>
-  </n-popconfirm>
+  <n-flex justify="center">
+    <n-popconfirm :show-icon="false" v-if="number">
+      <template #trigger>
+        <n-button text style="font-size: 24px" :focusable="false" @click="getClockHistory" :title="number">
+          <n-icon :color="clock.isClock ? clock.clockColorStyle : 'gray'" :depth="clock.depth">
+            <CheckSquareRegular v-if="clock.todyDone"/>
+            <SquareRegular v-if="!clock.todyDone"/>
+          </n-icon>
+        </n-button>
+      </template>
+      <template #action>
+        <n-button size="tiny" @click="redoClock">撤销一次</n-button>
+        <n-button size="tiny" type="error" @click="clearClockHistory">清空</n-button>
+      </template>
+      <n-space vertical>
+        <n-p v-for="item in clockHistory" :key="item.id">
+          {{ dayjs(item.clock_date).format('YYYY-MM-DD HH:mm:ss') }}
+        </n-p>
+      </n-space>
+    </n-popconfirm>
 
-  <n-button v-if="!number" text style="font-size: 24px" :focusable="false" :title="number">
-    <n-icon :color="clock.isClock ? clock.clockColorStyle : 'gray'" :depth="clock.depth">
-      <CheckSquareRegular v-if="clock.todyDone"/>
-      <SquareRegular v-if="!clock.todyDone"/>
-    </n-icon>
-  </n-button>
+    <n-button v-if="!number" text style="font-size: 24px" :focusable="false" :title="number">
+      <n-icon :color="clock.isClock ? clock.clockColorStyle : 'gray'" :depth="clock.depth">
+        <CheckSquareRegular v-if="clock.todyDone"/>
+        <SquareRegular v-if="!clock.todyDone"/>
+      </n-icon>
+    </n-button>
+  </n-flex>
 </template>

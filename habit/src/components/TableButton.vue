@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {Component} from "vue";
-import {NIcon, NP} from 'naive-ui'
+import {NIcon} from 'naive-ui'
 
 interface Props {
   title: string,
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   confirm: false,
   confirmShowIcon: true,
   confirmText: '',
-  size: 'tiny',
+  size: 'small',
   confirmComponent: null,
   click: () => {
   }
