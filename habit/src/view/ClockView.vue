@@ -14,19 +14,19 @@ import TableButton from "../components/TableButton.vue";
 import HabitAvatarText from "../components/HabitAvatarText.vue";
 
 import {getRecentWeeks} from '../util/dayUtil.ts'
-import {apis, business} from '../api/pb.ts'
+import {apis, business, pb} from '../api/pb.ts'
 import {onHabitRefreshEvent, habitClockEvent, onHabitClockEvent} from "../bus/bm.ts";
 
 const message = useMessage()
 const loadingBar = useLoadingBar()
 
-const habitClockData = ref({
+const habitClock = ref({
   habit: null,
+  user: pb.authStore.record ? pb.authStore.record.id : null,
 });
-const habitClock = computed(() => ({
-  ...habitClockData.value,
-  user: apis.currentUserId,
-}));
+pb.authStore.onChange(() => {
+  habitClock.value.user = pb.authStore.record.id;
+})
 
 function redoTodayClock(habitId) {
   business.redoTodayClock(habitId).then(() => {

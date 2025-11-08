@@ -4,24 +4,24 @@ import type {FormInst} from 'naive-ui'
 import {useMessage} from 'naive-ui'
 import {randomRgbaStr} from '../util/chromaUtil.ts'
 
-import {apis} from '../api/pb.ts'
+import {apis, pb} from '../api/pb.ts'
 import {habitRefreshEvent} from '../bus/bm.ts'
 
 const message = useMessage();
 
 const habitRef = ref<FormInst | null>(null)
-const habitData = ref({
+const habit = ref({
   habit_name: null,
   description: null,
   frequency: 1,
   cycle_day: 1,
   color: randomRgbaStr(),
-  archive: false
+  archive: false,
+  user: pb.authStore.record ? pb.authStore.record.id : null,
 });
-const habit = computed(() => ({
-  ...habitData.value,
-  user: apis.currentUserId,
-}));
+pb.authStore.onChange(() => {
+  habit.value.user = pb.authStore.record.id;
+})
 
 let createHabitLoading = ref(false)
 

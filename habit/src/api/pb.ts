@@ -14,8 +14,8 @@ export const apis = {
     habit_view_clock_number: pb.collection('habit_view_clock_number'),
     habit_view_tag_clock_number: pb.collection('habit_view_tag_clock_number'),
 
-    currentUserId: pb.authStore.isValid && pb.authStore.record ? pb.authStore.record.id : null,
-    currentUser: pb.authStore.isValid && pb.authStore.record ? pb.authStore.record : null,
+    logout: () => pb.authStore.clear(),
+    login: async (email: string, pwd: string) => await pb.collection('users').authWithPassword(email, pwd),
 }
 
 export const batchApis = {
@@ -33,7 +33,6 @@ export const batchApis = {
 }
 
 export const business = {
-    login: async (email: string, pwd: string) => await pb.collection('users').authWithPassword(email, pwd),
     redoTodayClock: async (habit_id: string) => {
         const items = await apis.habit_view_clock_number.getFullList({
             filter: `habit_id = '${habit_id}' && clock_day = '${dayjs().format('YYYY-MM-DD')}'`
@@ -49,6 +48,4 @@ export const business = {
         return Promise.all(deletePromises);
     }
 }
-
-pb.collection('users').authWithPassword("xicheng.jiang.1@gmail.com", "2fUdJ7KcFEgdxwe")
 

@@ -81,7 +81,7 @@ const routes: any[] = [
         label: "设置",
         key: 'setting',
         icon: renderIcon(ManageAccountsOutlined),
-        component: () => import('../view/HabitView.vue')
+        component: () => import('../view/PersonalSettingView.vue')
     },
 ]
 

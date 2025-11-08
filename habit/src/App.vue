@@ -9,7 +9,11 @@ import {darkTheme} from 'naive-ui'
     <n-message-provider>
       <n-notification-provider>
         <n-loading-bar-provider>
-          <AppView/>
+          <n-dialog-provider>
+            <n-modal-provider>
+              <AppView/>
+            </n-modal-provider>
+          </n-dialog-provider>
         </n-loading-bar-provider>
       </n-notification-provider>
     </n-message-provider>
