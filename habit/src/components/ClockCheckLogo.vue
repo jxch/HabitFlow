@@ -5,6 +5,8 @@ import {
 } from '@vicons/fa';
 import {NIcon} from "naive-ui";
 
+import {iconDepthMapRange} from "../util/numberUtil.ts"
+
 interface Props {
   date: string,
   clock_days: string | null,
@@ -12,7 +14,7 @@ interface Props {
   color: string,
   frequency: number,
   cycle_day: number,
-  habit_id : string,
+  habit_id: string,
 }
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -35,7 +37,7 @@ const number = computed(() => {
 const clock = computed(() => ({
   isClock: number.value > 0,
   clockColorStyle: props.color,
-  depth: 5 - Math.min(Math.floor((number.value / 2) / (props.frequency / props.cycle_day)), 4) as any,
+  depth: iconDepthMapRange(number.value / (props.frequency / props.cycle_day)) as any,
   number: number.value,
   todyDone: number.value >= props.frequency / props.cycle_day,
 }));

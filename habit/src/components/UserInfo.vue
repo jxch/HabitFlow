@@ -36,6 +36,8 @@ function logout() {
     <n-space align="center">
       <n-p style="color: gray">{{ currentUser.userEmail }}</n-p>
     </n-space>
-    <n-button type="error" @click="logout">注销</n-button>
+    <n-space justify="end">
+      <n-button type="error" @click="logout">注销</n-button>
+    </n-space>
   </n-space>
 </template>

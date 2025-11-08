@@ -97,7 +97,7 @@ const columns = ref([
   {title: '描述', key: 'description'},
   {
     title: '', key: 'operation', render(row: any) {
-      return h(NSpace, {justify: 'end'}, createTableButtons(row))
+      return h(NSpace, {justify: 'end'}, {default: () => createTableButtons(row)})
     }
   },
 ]);

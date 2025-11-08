@@ -1,8 +1,21 @@
 <script setup lang="ts">
-import {menus} from '../router'
 import {ref} from 'vue'
+import {menus, redirectLogin} from '../router'
+import {apis, pb} from '../api/pb.ts'
 
 const menuOptions = ref<any[]>(menus)
+const activeKey = ref<string>(window.location.pathname)
+
+function checkAndRedirectLogin() {
+  if (!apis.isLoggedIn()) {
+    redirectLogin();
+  }
+}
+
+checkAndRedirectLogin();
+pb.authStore.onChange(() => {
+  checkAndRedirectLogin();
+})
 </script>
 
 <template>
@@ -17,6 +30,7 @@ const menuOptions = ref<any[]>(menus)
         @expand="false"
     >
       <n-menu
+          v-model:value="activeKey"
           :collapsed="true"
           :collapsed-width="64"
           :collapsed-icon-size="22"
