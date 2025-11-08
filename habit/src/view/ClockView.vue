@@ -19,7 +19,7 @@ import HabitAvatarText from "../components/HabitAvatarText.vue";
 import dayjs from 'dayjs';
 import {getRecentWeeks} from '../util/dayUtil.ts'
 import {apis, business, pb} from '../api/pb.ts'
-import {onHabitRefreshEvent, habitClockEvent, onHabitClockEvent} from "../bus/bm.ts";
+import {onHabitRefreshEvent, habitRefreshEvent} from "../bus/bm.ts";
 
 const message = useMessage()
 const loadingBar = useLoadingBar()
@@ -36,7 +36,7 @@ pb.authStore.onChange(() => {
 function redoTodayClock(habitId) {
   business.redoTodayClock(habitId).then(() => {
     message.success("今日重做");
-    habitClockEvent();
+    habitRefreshEvent();
   });
 }
 
@@ -46,7 +46,7 @@ function clockCustom(habitId, createdDate) {
   loadingBar.start();
   apis.habit_clock.create(toRaw(habitClock.value)).then(() => {
     message.success("打卡 +1");
-    habitClockEvent();
+    habitRefreshEvent();
   }).catch(() => {
     loadingBar.error();
   }).finally(() => {
@@ -167,9 +167,6 @@ refresh();
 onHabitRefreshEvent(() => {
   refresh();
 });
-onHabitClockEvent(() => {
-  refresh();
-})
 </script>
 
 <template>

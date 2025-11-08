@@ -52,6 +52,34 @@ export const business = {
 
         return Promise.all(deletePromises);
     },
+    clearClock: async (habit_id: string, date: string) => {
+        const items = await apis.habit_view_clock_number.getFullList({
+            filter: `habit_id = '${habit_id}' && clock_day >= '${date}' && clock_day < '${dayjs(date).add(1, 'day').format("YYYY-MM-DD")}'`,
+        });
+
+        if (!items || items.length === 0) {
+            return;
+        }
+
+        const deletePromises = items.flatMap(item =>
+            String(item.clock_ids || '').split(',').map(id => apis.habit_clock.delete(id)));
+        return Promise.all(deletePromises);
+    },
+    getClock: async (habit_id: string, date: string) => {
+        const items = await apis.habit_view_clock_number.getFullList({
+            filter: `habit_id = '${habit_id}' && clock_day >= '${date}' && clock_day < '${dayjs(date).add(1, 'day').format("YYYY-MM-DD")}'`,
+        });
+
+        if (!items || items.length === 0) {
+            return;
+        }
+
+        let allIn = items.flatMap(item =>
+            String(item.clock_ids || '').split(',')).join("' || id = '");
+        return apis.habit_clock.getFullList({
+            filter: `id = '${allIn}'`
+        });
+    },
     deleteHabit: async (habit_id: string) => {
         const [habitClockItems, habitTagLinkItems] = await Promise.all([
             apis.habit_clock.getFullList({filter: `habit = '${habit_id}'`}),

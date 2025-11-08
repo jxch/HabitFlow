@@ -15,12 +15,3 @@ export function habitRefreshEvent(): void {
 export function onHabitRefreshEvent(handler: () => void): void {
     bus.on('habit::refresh', handler)
 }
-
-export function habitClockEvent(): void {
-    bus.emit('habit::clock')
-}
-
-export function onHabitClockEvent(handler: () => void): void {
-    bus.on('habit::clock', handler)
-}
-
