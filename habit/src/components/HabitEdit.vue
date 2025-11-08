@@ -29,10 +29,11 @@ async function createHabit() {
   await habitRef.value?.validate();
   createHabitLoading.value = true
   apis.habit_base.create(toRaw(habit.value)).then(res => {
-    createHabitLoading.value = false
     message.success(`${res.habit_name}已添加`);
     habitRefreshEvent();
-  })
+  }).finally(() => {
+    createHabitLoading.value = false
+  });
 }
 
 const rules = {

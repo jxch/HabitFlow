@@ -3,7 +3,7 @@ import {computed} from 'vue'
 import {getOptimalTextColor, randomRgbaStr} from '../util/chromaUtil.ts'
 
 interface Props {
-  text: string,
+  text: string | null,
   color?: string,
   backgroundColor?: string,
   circle?: boolean,
@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
   circle: false,
   backgroundColor: randomRgbaStr(),
   size: 'small',
+  text: '',
 });
 
 const avatar = computed(() => ({

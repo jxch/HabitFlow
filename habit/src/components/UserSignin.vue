@@ -5,7 +5,7 @@ import type {FormInst} from 'naive-ui'
 import {apis} from '../api/pb.ts'
 
 const message = useMessage();
-const loadingBar = useLoadingBar()
+const loadingBar = useLoadingBar();
 
 const loginRef = ref<FormInst | null>(null)
 const user = ref<any>({
