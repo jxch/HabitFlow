@@ -83,18 +83,26 @@ function createTableButtons(row: any) {
 
 const columns = ref([
   {
-    title: '', key: 'color', render(row: any) {
+    title: '', key: 'avatar', align: 'center', render(row: any) {
       return h(HabitAvatarText, {backgroundColor: row.color, text: row.habit_name})
     }
   },
-  {title: '习惯', key: 'habit_name'},
+  {
+    title: '习惯', key: 'habit_name', render(row: any) {
+      return h('span', {style: {color: row.color}}, row.habit_name);
+    }
+  },
   {title: '标签', key: 'tags'},
   {
     title: '频率', key: 'frequency', render(row: any) {
-      return h('p', {}, `${row.frequency}次/${row.cycle_day}天`)
+      return h('p', {style: {color: row.color}}, `${row.frequency}次/${row.cycle_day}天`)
     }
   },
-  {title: '描述', key: 'description'},
+  {
+    title: '描述', key: 'description', render(row: any) {
+      return h('span', {style: {color: row.color}}, row.description);
+    }
+  },
   {
     title: '', key: 'operation', render(row: any) {
       return h(NSpace, {justify: 'end'}, {default: () => createTableButtons(row)})
