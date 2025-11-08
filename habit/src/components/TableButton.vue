@@ -10,12 +10,14 @@ interface Props {
   click?: Function,
   confirm?: boolean,
   confirmText?: string,
+  size?: string,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   color: 'snow',
   confirm: false,
   confirmText: '',
+  size: 'tiny',
   click: () => {
   }
 });
@@ -31,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
           :title="props.title"
           :color="props.backgroundColor"
           :style="{color: props.color}"
+          :size="props.size"
           circle>
         <template #icon>
           <n-icon>
@@ -47,6 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
             :style="{color: props.color}"
             @click="props.click"
             :focusable="false"
+            :size="props.size"
             circle>
     <template #icon>
       <n-icon>

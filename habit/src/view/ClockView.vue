@@ -63,6 +63,7 @@ function createColumns() {
               color: row.color,
               frequency: row.frequency,
               cycle_day: row.cycle_day,
+              habit_id: row.id,
             })
           },
         }
@@ -86,7 +87,7 @@ function createColumns() {
   ]
   const optionColumns: any[] = [
     {
-      title: '', key: 'operation', render(row: any) {
+      title: '', key: 'operation', align: 'center', render(row: any) {
         return h(NSpace, {justify: "end"},
             {
               default: () => [
@@ -95,12 +96,14 @@ function createColumns() {
                   backgroundColor: row.color,
                   icon: CheckmarkDoneOutline,
                   click: () => clock(row.id),
+                  size: 'small',
                 }),
                 h(TableButton, {
                   title: '重做',
                   backgroundColor: "gray",
                   icon: ArrowCounterclockwise20Filled,
                   click: () => redoTodayClock(row.id),
+                  size: 'small',
                 }),
               ],
             })

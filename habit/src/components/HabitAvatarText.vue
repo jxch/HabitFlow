@@ -9,7 +9,8 @@ const props = withDefaults(defineProps<Props>(), {color: 'snow'});
 </script>
 
 <template>
-  <n-avatar :style="{
+  <n-avatar size="small"
+      :style="{
       color: props.color,
       backgroundColor: props.backgroundColor
     }">

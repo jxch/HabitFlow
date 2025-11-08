@@ -124,11 +124,12 @@ onHabitRefreshEvent(() => {
 </script>
 
 <template>
-  <n-data-table size="small"
-                :columns="columns"
-                :data="data"
-                :pagination="false"
-                :bordered="false"
+  <n-data-table
+      size="small"
+      :columns="columns"
+      :data="data"
+      :pagination="false"
+      :bordered="false"
   />
 </template>
 
