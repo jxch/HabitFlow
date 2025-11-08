@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, toRaw, computed} from 'vue'
+import {ref, toRaw} from 'vue'
 import type {FormInst} from 'naive-ui'
 import {useMessage} from 'naive-ui'
 import {randomRgbaStr} from '../util/chromaUtil.ts'
@@ -89,7 +89,7 @@ function cycleButtonClick(button: any) {
     currentCycleButton = button
   }
 }
-
+cycleButtonClick(cycleButtons.value[0]);
 </script>
 
 <template>

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type {Component} from "vue";
-import {NIcon} from 'naive-ui'
+import {NIcon, NP} from 'naive-ui'
 
 interface Props {
   title: string,
   color?: string,
   backgroundColor: string,
   icon: Component,
+  confirmComponent?: Component,
+  confirmShowIcon?: boolean,
   click?: Function,
   confirm?: boolean,
   confirmText?: string,
@@ -16,8 +18,10 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   color: 'snow',
   confirm: false,
+  confirmShowIcon: true,
   confirmText: '',
   size: 'tiny',
+  confirmComponent: null,
   click: () => {
   }
 });
@@ -25,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <n-popconfirm v-if="props.confirm"
+                :show-icon="props.confirmShowIcon"
                 positive-text="确认"
                 :negative-text="null"
                 @positive-click="props.click">
@@ -42,7 +47,10 @@ const props = withDefaults(defineProps<Props>(), {
         </template>
       </n-button>
     </template>
-    {{ props.confirmText }}
+    <span v-if="!props.confirmComponent">
+      {{ props.confirmText }}
+    </span>
+    <component v-if="props.confirmComponent" :is="confirmComponent"/>
   </n-popconfirm>
   <n-button v-if="!props.confirm"
             :title="props.title"

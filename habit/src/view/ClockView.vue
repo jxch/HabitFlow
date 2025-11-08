@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {h, ref, toRaw} from 'vue'
-import {NSpace, useMessage, useLoadingBar} from 'naive-ui'
+import {NSpace, useMessage, useLoadingBar, NDatePicker} from 'naive-ui'
 
 import {
   ArrowCounterclockwise20Filled
@@ -8,11 +8,15 @@ import {
 import {
   CheckmarkDoneOutline
 } from '@vicons/ionicons5'
+import {
+  AddTaskRound
+} from '@vicons/material'
 
 import ClockCheckLogo from "../components/ClockCheckLogo.vue";
 import TableButton from "../components/TableButton.vue";
 import HabitAvatarText from "../components/HabitAvatarText.vue";
 
+import dayjs from 'dayjs';
 import {getRecentWeeks} from '../util/dayUtil.ts'
 import {apis, business, pb} from '../api/pb.ts'
 import {onHabitRefreshEvent, habitClockEvent, onHabitClockEvent} from "../bus/bm.ts";
@@ -23,6 +27,7 @@ const loadingBar = useLoadingBar()
 const habitClock = ref({
   habit: null,
   user: apis.userid(),
+  clock_date: new Date(),
 });
 pb.authStore.onChange(() => {
   habitClock.value.user = apis.userid();
@@ -35,12 +40,22 @@ function redoTodayClock(habitId) {
   });
 }
 
-function clock(habitId) {
+function clockCustom(habitId, createdDate) {
   habitClock.value.habit = habitId;
+  habitClock.value.clock_date = createdDate;
+  loadingBar.start();
   apis.habit_clock.create(toRaw(habitClock.value)).then(() => {
     message.success("打卡 +1");
     habitClockEvent();
-  })
+  }).catch(() => {
+    loadingBar.error();
+  }).finally(() => {
+    loadingBar.finish();
+  });
+}
+
+function clock(habitId) {
+  clockCustom(habitId, new Date());
 }
 
 function createColumns() {
@@ -96,6 +111,24 @@ function createColumns() {
                   backgroundColor: row.color,
                   icon: CheckmarkDoneOutline,
                   click: () => clock(row.id),
+                  size: 'small',
+                }),
+                h(TableButton, {
+                  title: '自定义打卡',
+                  backgroundColor: '#8FBC8F',
+                  icon: AddTaskRound,
+                  confirm: true,
+                  confirmShowIcon: false,
+                  confirmComponent: h(NDatePicker, {
+                    type: 'datetime',
+                    value: habitClock.value.clock_date.getTime(),
+                    'onUpdate:value': (newValue) => {
+                      habitClock.value.clock_date = dayjs(newValue).toDate()
+                    },
+                  }),
+                  click: () => {
+                    clockCustom(row.id, habitClock.value.clock_date);
+                  },
                   size: 'small',
                 }),
                 h(TableButton, {
