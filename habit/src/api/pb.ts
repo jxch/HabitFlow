@@ -51,6 +51,25 @@ export const business = {
             String(item.clock_ids || '').split(',').map(id => apis.habit_clock.delete(id)));
 
         return Promise.all(deletePromises);
-    }
+    },
+    deleteHabit: async (habit_id: string) => {
+        const [habitClockItems, habitTagLinkItems] = await Promise.all([
+            apis.habit_clock.getFullList({filter: `habit = '${habit_id}'`}),
+            apis.habit_tag_link.getFullList({filter: `habit = '${habit_id}'`})
+        ]);
+
+        const deletePromises = [];
+        if (habitClockItems?.length > 0) {
+            const clockDeletePromises = habitClockItems.map(item => apis.habit_clock.delete(item.id));
+            deletePromises.push(...clockDeletePromises);
+        }
+        if (habitTagLinkItems?.length > 0) {
+            const tagLinkDeletePromises = habitTagLinkItems.map(item => apis.habit_tag_link.delete(item.id));
+            deletePromises.push(...tagLinkDeletePromises);
+        }
+
+        await Promise.all(deletePromises);
+        return apis.habit_base.delete(habit_id);
+    },
 }
 

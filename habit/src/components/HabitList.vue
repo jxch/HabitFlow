@@ -10,7 +10,7 @@ import {
   Undo
 } from '@vicons/carbon'
 
-import {apis} from '../api/pb.ts'
+import {apis, business} from '../api/pb.ts'
 import {habitRefreshEvent, onHabitRefreshEvent} from '../bus/bm.ts'
 
 const message = useMessage()
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 function createTableButtons(row: any) {
   const editH = h(TableButton, {
     title: '编辑', backgroundColor: row.color, icon: Edit32Regular, click: () => {
-      message.info("编辑")
+      message.info("编辑功能开发中")
     }
   });
 
@@ -63,10 +63,10 @@ function createTableButtons(row: any) {
 
   const deleteH = h(TableButton, {
     title: '删除', backgroundColor: "#c12626", icon: Delete20Regular,
-    confirm: true, confirmText: '确定要删除这个习惯吗？',
+    confirm: true, confirmText: '彻底删除该习惯的所有数据！不可恢复！',
     click: () => {
       loadingBar.start();
-      apis.habit_base.delete(row.id).then(() => {
+      business.deleteHabit(row.id).then(() => {
         message.success(`${row.habit_name}删除成功`)
         habitRefreshEvent();
       }).catch(() => {

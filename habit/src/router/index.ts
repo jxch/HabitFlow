@@ -15,7 +15,7 @@ import {
     ArchiveMultiple16Regular,
 } from '@vicons/fluent'
 import {
-    ManageAccountsOutlined
+    ManageAccountsOutlined, ManageHistoryFilled,
 } from '@vicons/material'
 
 function renderIcon(icon: Component) {
@@ -46,28 +46,35 @@ const routes: any[] = [
         label: "热力图",
         key: 'heatmap',
         icon: renderIcon(HeatMap),
-        component: () => import('../view/HabitView.vue')
+        component: () => import('../view/HeatmapView.vue')
     },
     {
         path: '/calendar',
         label: "日历图",
         key: 'calendar',
         icon: renderIcon(Calendar),
-        component: () => import('../view/HabitView.vue')
+        component: () => import('../view/CalendarView.vue')
     },
     {
         path: '/analysis',
         label: "数据分析",
         key: 'analysis',
         icon: renderIcon(Pulse20Regular),
-        component: () => import('../view/HabitView.vue')
+        component: () => import('../view/DataAnalysisView.vue')
     },
     {
         path: '/tagManagement',
         label: "标签管理",
         key: 'tagManagement',
         icon: renderIcon(TagMultiple16Regular),
-        component: () => import('../view/HabitView.vue')
+        component: () => import('../view/TagView.vue')
+    },
+    {
+        path: '/history',
+        label: "打卡历史",
+        key: 'history',
+        icon: renderIcon(ManageHistoryFilled),
+        component: () => import('../view/ClockHistoryView.vue')
     },
     {
         path: '/archive',
