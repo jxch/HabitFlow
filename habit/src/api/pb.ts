@@ -9,6 +9,7 @@ export const apis = {
     habit_tag_base: pb.collection('habit_tag_base'),
     habit_tag_link: pb.collection('habit_tag_link'),
     habit_clock: pb.collection('habit_clock'),
+    dev_lifecycle: pb.collection('dev_lifecycle'),
 
     habit_view_clock: pb.collection('habit_view_clock'),
     habit_view_clock_number: pb.collection('habit_view_clock_number'),
@@ -21,6 +22,7 @@ export const apis = {
     userid: () => pb.authStore.record ? pb.authStore.record.id : null,
     username: () => pb.authStore.record ? pb.authStore.record.name : null,
     userEmail: () => pb.authStore.record ? pb.authStore.record.email : null,
+    isSuperUser: () => !!pb.authStore.record && pb.authStore.record.role === 'SUPER',
 }
 
 export const batchApis = {

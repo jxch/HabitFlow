@@ -4,10 +4,11 @@ import UserInfo from "../components/UserInfo.vue";
 import {pb, apis} from '../api/pb.ts'
 import {ref} from 'vue'
 import UserSignup from "../components/UserSignup.vue";
+import DevLifecyclePreview from "../components/DevLifecyclePreview.vue";
 
 const isLoggedIn = ref<boolean>(apis.isLoggedIn());
 pb.authStore.onChange(() => {
-  isLoggedIn.value = apis.isLoggedIn()
+  isLoggedIn.value = apis.isLoggedIn();
 })
 
 </script>
@@ -32,6 +33,9 @@ pb.authStore.onChange(() => {
     </n-card>
     <n-card v-show="isLoggedIn">
       <UserInfo/>
+    </n-card>
+    <n-card>
+      <DevLifecyclePreview/>
     </n-card>
   </n-flex>
 </template>

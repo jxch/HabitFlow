@@ -3,8 +3,18 @@ import {ref} from 'vue'
 import {menus, redirectLogin} from '../router'
 import {apis, pb} from '../api/pb.ts'
 
-const menuOptions = ref<any[]>(menus)
 const activeKey = ref<string>(window.location.pathname)
+const isSuperUser = ref<boolean>(apis.isSuperUser());
+
+function createMenus() {
+  if (isSuperUser.value) {
+    return menus;
+  }
+
+  return menus.filter(m => m.role != 'SUPER');
+}
+
+const menuOptions = ref<any[]>(createMenus());
 
 function checkAndRedirectLogin() {
   if (!apis.isLoggedIn()) {
@@ -15,6 +25,8 @@ function checkAndRedirectLogin() {
 checkAndRedirectLogin();
 pb.authStore.onChange(() => {
   checkAndRedirectLogin();
+  isSuperUser.value = apis.isSuperUser();
+  menuOptions.value = createMenus();
 })
 </script>
 

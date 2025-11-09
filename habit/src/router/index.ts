@@ -15,7 +15,7 @@ import {
     ArchiveMultiple16Regular,
 } from '@vicons/fluent'
 import {
-    ManageAccountsOutlined, ManageHistoryFilled,
+    ManageAccountsOutlined, ManageHistoryFilled, LogoDevOutlined,
 } from '@vicons/material'
 
 function renderIcon(icon: Component) {
@@ -80,6 +80,13 @@ const routes: any[] = [
         label: "设置",
         icon: renderIcon(ManageAccountsOutlined),
         component: () => import('../view/PersonalSettingView.vue')
+    },
+    {
+        path: '/dev',
+        label: "开发周期",
+        icon: renderIcon(LogoDevOutlined),
+        role: 'SUPER',
+        component: () => import('../view/DevLifecycleView.vue')
     },
 ]
 
