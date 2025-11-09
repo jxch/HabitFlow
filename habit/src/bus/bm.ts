@@ -15,3 +15,13 @@ export function habitRefreshEvent(): void {
 export function onHabitRefreshEvent(handler: () => void): void {
     bus.on('habit::refresh', handler)
 }
+
+export function resizeEvent(): void {
+    bus.emit('windows::resize')
+}
+
+export function onResizeEvent(handler: () => void): void {
+    bus.on('windows::resize', handler)
+}
+
+window.addEventListener('resize', resizeEvent);

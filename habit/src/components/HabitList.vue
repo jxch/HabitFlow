@@ -11,7 +11,7 @@ import {
 } from '@vicons/carbon'
 
 import {apis, business} from '../api/pb.ts'
-import {habitRefreshEvent, onHabitRefreshEvent} from '../bus/bm.ts'
+import {habitRefreshEvent, onHabitRefreshEvent, onResizeEvent} from '../bus/bm.ts'
 
 const message = useMessage()
 const loadingBar = useLoadingBar()
@@ -99,7 +99,7 @@ const columns = ref([
     }
   },
   {
-    title: '描述', key: 'description', render(row: any) {
+    title: '描述', key: 'description', width: '400', ellipsis: true, render(row: any) {
       return h('span', {style: {color: row.color}}, row.description);
     }
   },
@@ -111,6 +111,8 @@ const columns = ref([
 ]);
 
 let data = ref<any>([]);
+const tableHeight = ref(window.innerHeight - 40);
+onResizeEvent(() => tableHeight.value = window.innerHeight - 40);
 
 function refresh() {
   loadingBar.start();
@@ -138,6 +140,7 @@ onHabitRefreshEvent(() => {
       :data="data"
       :pagination="false"
       :bordered="false"
+      :max-height="tableHeight"
   />
 </template>
 
