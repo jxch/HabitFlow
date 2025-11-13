@@ -68,6 +68,6 @@ export function fillClockDaysDesc(habit: any, weeks: number = 2) {
     };
 }
 
-export function batchFillClockDaysDesc(habits: any[]) {
-    return habits.map(habit => fillClockDaysDesc(habit));
+export function batchFillClockDaysDesc(habits: any[], weeks: number = 2) {
+    return habits.map(habit => fillClockDaysDesc(habit, weeks));
 }

@@ -20,3 +20,12 @@ export function getOptimalTextColor(backgroundColor: string): string {
         return '#ffffff';
     }
 }
+
+export function generateHeatmapColors(baseColor: string): string[] {
+    return chroma.scale([
+        chroma(baseColor).alpha(0.1),  // 最浅（10%透明度）
+        chroma(baseColor).alpha(0.3),  // 浅
+        chroma(baseColor).alpha(0.6),  // 中
+        chroma(baseColor).alpha(1)   // 最深（不透明）
+    ]).mode('lab').colors(4);
+}
