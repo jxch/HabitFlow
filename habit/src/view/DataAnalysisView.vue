@@ -14,6 +14,9 @@ const radarOption = ref<any>({
   title: {text: '综合完成率'},
   legend: {data: ['平均完成率', '今日完成率']},
   radar: {indicator: [{name: 'empty', max: 100},]},
+  tooltip: {
+    trigger: 'item',
+  },
   series: [
     {
       name: 'Budget vs spending',
