@@ -36,9 +36,9 @@ export function getRecentWeeks(options: any = {}) {
     return dates;
 }
 
-export function fillClockDaysDesc(habit: any) {
+export function fillClockDaysDesc(habit: any, weeks: number = 2) {
     // 获取近两周的日期
-    const recentDates = getRecentWeeks({weeks: 2});
+    const recentDates = getRecentWeeks({weeks: weeks});
     const allDateFormats = recentDates.map(item => item.dateFormat).reverse();
 
     // 解析现有的日期和数字

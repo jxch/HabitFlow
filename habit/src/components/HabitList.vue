@@ -95,12 +95,12 @@ const columns = ref([
   {title: '标签', key: 'tags'},
   {
     title: '频率', key: 'frequency', render(row: any) {
-      return h('p', {style: {color: row.color}}, `${row.frequency}次/${row.cycle_day}天`)
+      return h('span', {style: {color: row.color}}, `${row.frequency}次/${row.cycle_day}天`)
     }
   },
   {
     title: '描述', key: 'description', width: '400', ellipsis: true, render(row: any) {
-      return h('span', {style: {color: row.color}}, row.description);
+      return h('span', {style: {color: row.color}, title: row.description}, row.description);
     }
   },
   {
