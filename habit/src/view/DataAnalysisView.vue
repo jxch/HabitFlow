@@ -43,7 +43,12 @@ const radarOption = ref<any>({
   },
   tooltip: {
     trigger: 'item',
+    backgroundColor: 'gray',
+    textStyle: {
+      color: 'snow',
+    },
   },
+  confine: true,
   series: [
     {
       name: 'Budget vs spending',
