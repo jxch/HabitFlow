@@ -212,9 +212,9 @@ try {
     Write-Host "$commandPrefix$($buildArgs -join ' ')" -ForegroundColor Gray
     Write-Host "在目录: $targetDirectory" -ForegroundColor Gray
 
-    # 确认执行
-    Write-Host "`n按任意键开始构建，或 Ctrl+C 取消..." -ForegroundColor Yellow
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+#    # 确认执行
+#    Write-Host "`n按任意键开始构建，或 Ctrl+C 取消..." -ForegroundColor Yellow
+#    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
     Write-Host "`n开始执行..." -ForegroundColor Blue
 
