@@ -10,10 +10,37 @@ import {slidingWindowSum} from "../util/numberUtil.ts";
 
 const loadingBar = useLoadingBar();
 
+const avgDays = ref<number>(30);
 const radarOption = ref<any>({
-  title: {text: '综合完成率'},
-  legend: {data: ['平均完成率', '今日完成率']},
-  radar: {indicator: [{name: 'empty', max: 100},]},
+  title: {
+    text: '综合完成率',
+    left: 'left',
+    top: 'top',
+    textStyle: {
+      color: 'snow',
+      fontSize: 18,
+    },
+  },
+  legend: {
+    data: ['平均完成率', '今日完成率'],
+    left: 'left',
+    top: 'bottom',
+    orient: 'vertical',
+    textStyle: {
+      color: 'snow'
+    },
+  },
+  radar: {
+    indicator: [{name: 'empty', max: 100},],
+    center: ['50%', '50%'],
+    radius: ['10%', '80%'],
+    name: {
+      textStyle: {
+        color: 'snow',
+        fontWeight: 'normal',
+      }
+    },
+  },
   tooltip: {
     trigger: 'item',
   },
@@ -47,7 +74,7 @@ function refresh(weeks: number = 5) {
       let avg: number = 0;
       if (indexOf >= 0) {
         const sum = item['rate'].slice(0, indexOf + 1).reduce((a: number, b: number) => Number(a) + Number(b));
-        avg = Number(Number(Number(sum) / Number(indexOf + 1)).toFixed(2));
+        avg = Number(Number(Number(sum) / Math.min(indexOf + 1, avgDays.value)).toFixed(2));
       }
 
       avgRate.push(avg);
@@ -70,5 +97,8 @@ doAndOnHabitRefreshEvent(refresh);
 </script>
 
 <template>
-  <v-chart :option="radarOption"/>
+  <n-card style="height: 400px; width: 30%">
+    <v-chart :option="radarOption" style="height: 100%; width: 100%"/>
+  </n-card>
+
 </template>
