@@ -50,15 +50,18 @@ const clock = computed(() => ({
 
 const clockHistory = ref<any>([]);
 const clockDates = ref<string>('');
+const buttonDisabled = ref(true);
 
 async function getClockHistory() {
   loadingBar.start();
+  buttonDisabled.value = true;
   const items = await business.getClock(props.habit_id, props.date);
   if (items && items.length > 0) {
     clockHistory.value = items;
     clockDates.value = items.map(item => dayjs(item.clock_date).format('YYYY-MM-DD HH:mm:ss')).join('<br/>');
   }
   loadingBar.finish();
+  buttonDisabled.value = false;
 }
 
 function clearClockHistory() {
@@ -109,8 +112,8 @@ onHabitRefreshDateEvent((event: any) => {
         </n-button>
       </template>
       <template #action>
-        <n-button size="tiny" @click="redoClock">撤销一次</n-button>
-        <n-button size="tiny" type="error" @click="clearClockHistory">清空</n-button>
+        <n-button size="tiny" @click="redoClock" :disabled="buttonDisabled">撤销一次</n-button>
+        <n-button size="tiny" type="error" @click="clearClockHistory" :disabled="buttonDisabled">清空</n-button>
       </template>
       <n-space vertical>
         <n-p v-for="item in clockHistory" :key="item.id">

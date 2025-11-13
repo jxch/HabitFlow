@@ -71,3 +71,10 @@ export function fillClockDaysDesc(habit: any, weeks: number = 2) {
 export function batchFillClockDaysDesc(habits: any[], weeks: number = 2) {
     return habits.map(habit => fillClockDaysDesc(habit, weeks));
 }
+
+export function weeksToFirstDayOfMonth(year: number, month: number): number {
+    const today = dayjs();
+    const targetDate = dayjs(`${year}-${month}-01`);
+    const daysDiff = targetDate.diff(today, 'day');
+    return Math.ceil(daysDiff / 7);
+}

@@ -5,15 +5,24 @@ interface Props {
   color: string,
   frequency?: number,
   cycle_day?: number,
-  todayNumber: number,
+  todayNumber?: number,
+  habit_name?: string,
+  percent?: number,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   frequency: 1,
   cycle_day: 1,
+  habit_name: '',
+  percent: -1,
+  todayNumber: -1,
 });
 
 const percentage = computed(() => {
+  if (props.percent >= 0) {
+    return props.percent;
+  }
+
   if (props.todayNumber == 0) {
     return 0;
   }
@@ -29,7 +38,7 @@ const percentage = computed(() => {
       :percentage="percentage"
       :stroke-width="15"
       style="width: 26px;"
-      :title="`今日进度：${percentage}%`"
+      :title="`${habit_name} 进度：${percentage}%`"
   >
     <span style="text-align: center;"></span>
   </n-progress>
