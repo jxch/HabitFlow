@@ -20,3 +20,19 @@ export function iconDepthMapRange(value: number): number {
 
     return depth;
 }
+
+export function slidingWindowSum(input: string, windowSize: number): number[] {
+    const numbers = input.split(',').map(str => Number(str.trim()));
+    const result: number[] = [];
+
+    for (let i = 0; i < numbers.length; i++) {
+        let sum = 0;
+        for (let j = 0; j < windowSize; j++) {
+            const index = i + j;  // 从当前位置向右
+            sum += index < numbers.length ? numbers[index] : 0; // 超出范围默认为0
+        }
+        result.push(sum);
+    }
+
+    return result;
+}
