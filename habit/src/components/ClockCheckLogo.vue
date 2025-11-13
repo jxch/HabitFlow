@@ -37,7 +37,7 @@ const number = computed(() => {
   if (props.numbers == null || props.numbers == 0 || dateIndex() == -1) {
     return 0;
   }
-  return Number((props.numbers + '').split(",")[dateIndex()]);
+  return Number(String(props.numbers).split(",")[dateIndex()]);
 });
 
 const clock = computed(() => ({

@@ -43,7 +43,7 @@ export function fillClockDaysDesc(habit: any) {
 
     // 解析现有的日期和数字
     const existingDates = habit.clock_days ? habit.clock_days.split(',') : [];
-    const existingNumbers = habit.numbers ? habit.numbers.split(',') : [];
+    const existingNumbers = habit.numbers ? String(habit.numbers).split(',') : [];
 
     // 创建日期到数字的映射
     const dateNumberMap = new Map<string, string>();

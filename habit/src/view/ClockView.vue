@@ -95,14 +95,14 @@ function createColumns() {
           color: row.color,
           frequency: row.frequency,
           cycle_day: row.cycle_day,
-          todayNumber: Number((row.numbers + '').split(',')[0]),
+          todayNumber: Number(String(row.numbers).split(',')[0]),
         })
       }
     },
     {
       title: '', key: 'progress', align: 'center', render(row: any) {
         return h('span', {style: {color: row.color}, title: `目标频率：${row.frequency}次/${row.cycle_day}天`},
-            `${(row.numbers + '').split(',').slice(0, row.cycle_day).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${row.frequency}`);
+            `${String(row.numbers).split(',').slice(0, row.cycle_day).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${row.frequency}`);
       }
     },
     {
