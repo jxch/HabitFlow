@@ -7,7 +7,7 @@ import {NIcon, useLoadingBar, useMessage} from "naive-ui";
 
 import dayjs from 'dayjs';
 import {apis, business} from '../api/pb.ts'
-import {habitRefreshEvent, onHabitRefreshEvent} from '../bus/bm.ts'
+import {habitRefreshEvent, onHabitRefreshDateEvent, habitRefreshDateEvent} from '../bus/bm.ts'
 import {iconDepthMapRange} from "../util/numberUtil.ts"
 
 const message = useMessage()
@@ -66,6 +66,7 @@ function clearClockHistory() {
   business.clearClock(props.habit_id, props.date).then(() => {
     message.success(`${props.date}已清空`);
     habitRefreshEvent();
+    habitRefreshDateEvent(props.habit_id, props.date);
   }).catch(() => {
     loadingBar.error();
   }).finally(() => {
@@ -80,6 +81,7 @@ function redoClock() {
     apis.habit_clock.delete(item.id).then(() => {
       message.success(`${dayjs(item.clock_date).format('YYYY-MM-DD HH:mm:ss')}的打卡记录已撤销`);
       habitRefreshEvent();
+      habitRefreshDateEvent(item.id, props.date);
     }).catch(() => {
       loadingBar.error();
     }).finally(() => {
@@ -88,8 +90,10 @@ function redoClock() {
   }
 }
 
-onHabitRefreshEvent(() => {
-  getClockHistory();
+onHabitRefreshDateEvent((event: any) => {
+  if (props.date == event.date) {
+    getClockHistory();
+  }
 });
 </script>
 

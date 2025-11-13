@@ -16,6 +16,19 @@ export function onHabitRefreshEvent(handler: () => void): void {
     bus.on('habit::refresh', handler)
 }
 
+export function doAndOnHabitRefreshEvent(handler: () => void): void {
+    handler()
+    bus.on('habit::refresh', handler)
+}
+
+export function habitRefreshDateEvent(habit_id: string, date: string): void {
+    bus.emit('habit::refreshDate', {habit_id: habit_id, date: date})
+}
+
+export function onHabitRefreshDateEvent(handler: (event: any) => void): void {
+    bus.on('habit::refreshDate', handler)
+}
+
 export function resizeEvent(): void {
     bus.emit('windows::resize')
 }

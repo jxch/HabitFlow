@@ -18,9 +18,9 @@ import HabitAvatarText from "../components/HabitAvatarText.vue";
 import TableProgress from "../components/TableProgress.vue";
 
 import dayjs from 'dayjs';
-import {getRecentWeeks} from '../util/dayUtil.ts'
 import {apis, business, pb} from '../api/pb.ts'
-import {onHabitRefreshEvent, habitRefreshEvent} from "../bus/bm.ts";
+import {getRecentWeeks, batchFillClockDaysDesc, format} from '../util/dayUtil.ts'
+import {doAndOnHabitRefreshEvent, habitRefreshEvent, habitRefreshDateEvent} from "../bus/bm.ts";
 
 const message = useMessage()
 const loadingBar = useLoadingBar()
@@ -48,6 +48,7 @@ function clockCustom(habitId: any, createdDate: any) {
   apis.habit_clock.create(toRaw(habitClock.value)).then(() => {
     message.success("打卡 +1");
     habitRefreshEvent();
+    habitRefreshDateEvent(habitId, format(createdDate, 'yyyy-MM-dd'));
   }).catch(() => {
     loadingBar.error();
   }).finally(() => {
@@ -101,7 +102,7 @@ function createColumns() {
     {
       title: '', key: 'progress', align: 'center', render(row: any) {
         return h('span', {style: {color: row.color}, title: `目标频率：${row.frequency}次/${row.cycle_day}天`},
-            `${(row.numbers + '').split(',').slice(0, 8).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${row.frequency}`);
+            `${(row.numbers + '').split(',').slice(0, row.cycle_day).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${row.frequency}`);
       }
     },
     {
@@ -169,8 +170,8 @@ const data = ref<any>([])
 
 function refresh() {
   loadingBar.start();
-  apis.habit_view_clock.getFullList().then((res) => {
-    data.value = res
+  apis.habit_view_clock.getFullList().then((items) => {
+    data.value = batchFillClockDaysDesc(items);
   }).catch(() => {
     loadingBar.error();
   }).finally(() => {
@@ -178,10 +179,7 @@ function refresh() {
   });
 }
 
-refresh();
-onHabitRefreshEvent(() => {
-  refresh();
-});
+doAndOnHabitRefreshEvent(refresh);
 </script>
 
 <template>

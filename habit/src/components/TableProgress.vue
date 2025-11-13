@@ -18,7 +18,7 @@ const percentage = computed(() => {
     return 0;
   }
 
-  return (props.todayNumber / (props.frequency / props.cycle_day) * 100).toFixed(0);
+  return Math.min(Number((props.todayNumber / (props.frequency / props.cycle_day) * 100).toFixed(0)), 100);
 })
 </script>
 
