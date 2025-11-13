@@ -33,18 +33,18 @@ function refresh(weeks: number = 5) {
       return;
     }
 
-    const avgRate = [];
-    const dayRate = [];
+    const avgRate: number[] = [];
+    const dayRate: number[] = [];
     const indicator = [];
     const fillItems = batchFillClockDaysDesc(items, weeks);
     for (let item of fillItems) {
       item['numbersSliding'] = slidingWindowSum(item.numbers, item.cycle_day);
       item['rate'] = item['numbersSliding'].map((num: number) => Number(num / item.frequency * 100).toFixed(2));
       const indexOf = item.clock_days.indexOf(dayjs(item.habit_created).format('YYYY-MM-DD'));
-      let avg = 0;
+      let avg: number = 0;
       if (indexOf >= 0) {
         const sum = item['rate'].slice(0, indexOf + 1).reduce((a: number, b: number) => Number(a) + Number(b));
-        avg = Number(Number(sum) / Number(indexOf + 1)).toFixed(2);
+        avg = Number(Number(Number(sum) / Number(indexOf + 1)).toFixed(2));
       }
 
       avgRate.push(avg);

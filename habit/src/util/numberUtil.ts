@@ -22,14 +22,14 @@ export function iconDepthMapRange(value: number): number {
 }
 
 export function slidingWindowSum(input: string, windowSize: number): number[] {
-    const numbers = input.split(',').map(str => Number(str.trim()));
+    const numbers: number[] = input.split(',').map(str => Number(str.trim()));
     const result: number[] = [];
 
-    for (let i = 0; i < numbers.length; i++) {
-        let sum = 0;
-        for (let j = 0; j < windowSize; j++) {
-            const index = i + j;  // 从当前位置向右
-            sum += index < numbers.length ? numbers[index] : 0; // 超出范围默认为0
+    for (let i: number = 0; i < numbers.length; i++) {
+        let sum: number = 0;
+        for (let j: number = 0; j < windowSize; j++) {
+            const index: number = i + j;  // 从当前位置向右
+            sum += index < numbers.length ? numbers[index]! : 0; // 超出范围默认为0
         }
         result.push(sum);
     }
