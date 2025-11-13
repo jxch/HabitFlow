@@ -102,7 +102,7 @@ function createColumns() {
     {
       title: '', key: 'progress', align: 'center', render(row: any) {
         return h('span', {style: {color: row.color}, title: `目标频率：${row.frequency}次/${row.cycle_day}天`},
-            `${String(row.numbers).split(',').slice(0, row.cycle_day).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${row.frequency}`);
+            `${String(row.numbers).split(',').slice(0, row.cycle_day).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${row.frequency}-${row.cycle_day}`);
       }
     },
     {

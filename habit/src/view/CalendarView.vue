@@ -58,7 +58,14 @@ function formatDate(year: number, month: number, day: number) {
 }
 
 function getItems(year: number, month: number, day: number) {
-  return dateGroup.value.get(formatDate(year, month, day));
+  return dateGroup.value.get(formatDate(year, month, day))
+      ?.sort((a: any, b: any) => a.habit_name.localeCompare(b.habit_name));
+}
+
+function getValidItems(year: number, month: number, day: number) {
+  return getItems(year, month, day)?.filter((item: any) => {
+    return Number(String(item.numbers).split(',')[0]) > 0
+  })?.sort((a: any, b: any) => a.habit_name.localeCompare(b.habit_name));
 }
 
 function showModal(year: number, month: number, day: number) {
@@ -83,11 +90,10 @@ doAndOnHabitRefreshEvent(refresh);
         @update:value="handleUpdate"
     >
       <n-flex>
-        <n-flex v-for="item in getItems(year, month, date)">
+        <n-flex v-for="item in getValidItems(year, month, date)">
           <TableProgress
-              v-if="Number(String(item.numbers).split(',')[0]) > 0"
-              :habit_name="item.habit_name"
               :color="item.color"
+              :habit_name="item.habit_name"
               :cycle_day="item.cycle_day"
               :frequency="item.frequency"
               :today-number="Number(String(item.numbers).split(',')[0])"
@@ -138,7 +144,7 @@ doAndOnHabitRefreshEvent(refresh);
           <n-td>
             <span :style="{color: item['color']}">
               {{
-                `${String(item['numbers']).split(',').slice(0, item['cycle_day']).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${item['frequency']}`
+                `${String(item['numbers']).split(',').slice(0, item['cycle_day']).reduce((sum, val, _idx) => sum + (Number(val) || 0), 0)}/${item['frequency']}-${item['cycle_day']}`
               }}
             </span>
           </n-td>
