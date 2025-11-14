@@ -83,10 +83,10 @@ const meanCurrent = computed(() => {
   return Number(mean(radarOption.value.series[0].data[1].value)).toFixed(2);
 });
 const meanTotalType = computed(() => {
-  return meanType(meanTotal.value);
+  return meanType(Number(meanTotal.value));
 });
 const meanCurrentType = computed(() => {
-  return meanType(meanCurrent.value);
+  return meanType(Number(meanCurrent.value));
 });
 
 function refresh(weeks: number = 5) {

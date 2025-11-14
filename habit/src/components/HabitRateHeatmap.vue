@@ -17,7 +17,7 @@ const habits = computed(() => {
   });
 });
 const data = computed(() => {
-  const habitData = [];
+  const habitData: (number | string)[][] = [];
   if (!props.items) {
     return habitData;
   }
