@@ -11,7 +11,8 @@ import {
 } from '@vicons/carbon'
 
 import {apis, business} from '../api/pb.ts'
-import {habitRefreshEvent, onHabitRefreshEvent, onResizeEvent} from '../bus/bm.ts'
+import {habitRefreshEvent, doAndOnHabitRefreshEvent, onResizeEvent} from '../bus/bm.ts'
+import HabitEdit from "./HabitEdit.vue";
 
 const message = useMessage()
 const loadingBar = useLoadingBar()
@@ -24,10 +25,14 @@ const props = withDefaults(defineProps<Props>(), {
   archive: false,
 });
 
+const showModal = ref<boolean>(false);
+const item = ref<any>();
+
 function createTableButtons(row: any) {
   const editH = h(TableButton, {
     title: '编辑', backgroundColor: row.color, icon: Edit32Regular, click: () => {
-      message.info("编辑功能开发中")
+      item.value = row;
+      showModal.value = true;
     }
   });
 
@@ -127,20 +132,22 @@ function refresh() {
   });
 }
 
-refresh();
-onHabitRefreshEvent(() => {
-  refresh();
-});
+doAndOnHabitRefreshEvent(refresh);
 </script>
 
 <template>
-  <n-data-table
-      size="small"
-      :columns="columns"
-      :data="data"
-      :pagination="false"
-      :bordered="false"
-      :max-height="tableHeight"
-  />
+  <n-space>
+    <n-data-table
+        size="small"
+        :columns="columns"
+        :data="data"
+        :pagination="false"
+        :bordered="false"
+        :max-height="tableHeight"
+    />
+    <n-modal v-model:show="showModal" style="width: 30%;">
+      <HabitEdit :item="item" v-model:show="showModal"/>
+    </n-modal>
+  </n-space>
 </template>
 

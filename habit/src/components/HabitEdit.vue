@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, toRaw} from 'vue'
+import {ref, toRaw, watchEffect, onMounted} from 'vue'
 import type {FormInst} from 'naive-ui'
 import {useMessage} from 'naive-ui'
 import {randomRgbaStr} from '../util/chromaUtil.ts'
@@ -8,6 +8,16 @@ import {apis, pb} from '../api/pb.ts'
 import {habitRefreshEvent} from '../bus/bm.ts'
 
 const message = useMessage();
+
+interface Props {
+  item?: any,
+  show?: boolean,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  show: false,
+});
+const emit = defineEmits<{ 'update:show': [value: boolean] }>();
 
 const habitRef = ref<FormInst | null>(null)
 const habit = ref({
@@ -23,17 +33,38 @@ pb.authStore.onChange(() => {
   habit.value.user = apis.userid();
 })
 
-let createHabitLoading = ref(false)
+watchEffect(() => {
+  if (props.item) {
+    habit.value.habit_name = props.item.habit_name;
+    habit.value.description = props.item.description;
+    habit.value.frequency = props.item.frequency;
+    habit.value.cycle_day = props.item.cycle_day;
+    habit.value.color = props.item.color;
+    habit.value.archive = props.item.archive;
+  }
+});
+
+let loading = ref(false)
 
 async function createHabit() {
   await habitRef.value?.validate();
-  createHabitLoading.value = true
-  apis.habit_base.create(toRaw(habit.value)).then(res => {
-    message.success(`${res.habit_name}已添加`);
-    habitRefreshEvent();
-  }).finally(() => {
-    createHabitLoading.value = false
-  });
+  loading.value = true
+  if (props.item) {
+    apis.habit_base.update(props.item.id, toRaw(habit.value)).then(() => {
+      message.success(`${props.item.habit_name}已更新`);
+      emit('update:show', false);
+      habitRefreshEvent();
+    }).finally(() => {
+      loading.value = false
+    });
+  } else {
+    apis.habit_base.create(toRaw(habit.value)).then(res => {
+      message.success(`${res.habit_name}已添加`);
+      habitRefreshEvent();
+    }).finally(() => {
+      loading.value = false
+    });
+  }
 }
 
 const rules = {
@@ -89,7 +120,17 @@ function cycleButtonClick(button: any) {
     currentCycleButton = button
   }
 }
-cycleButtonClick(cycleButtons.value[0]);
+
+onMounted(() => {
+  if (props.item) {
+    const currentButton = cycleButtons.value.filter((button) => button.frequency == props.item.frequency && button.cycle_day == props.item.cycle_day);
+    if (currentButton && currentButton.length > 0) {
+      cycleButtonClick(currentButton[0]);
+    }
+  } else {
+    cycleButtonClick(cycleButtons.value[0]);
+  }
+});
 </script>
 
 <template>
@@ -133,7 +174,7 @@ cycleButtonClick(cycleButtons.value[0]);
       </n-form-item>
 
       <n-flex justify="end">
-        <n-button round type="primary" :onclick="createHabit" :loading="createHabitLoading">保存</n-button>
+        <n-button round type="primary" :onclick="createHabit" :loading="loading">保存</n-button>
       </n-flex>
     </n-form>
   </n-card>
