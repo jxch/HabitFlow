@@ -149,10 +149,10 @@ doAndOnHabitRefreshEvent(refresh);
         </n-tr>
       </n-table>
     </n-card>
-    <n-card style="height: 400px; width: 30%">
-      <v-chart :option="radarOption" style="height: 100%; width: 100%"/>
+    <n-card style="height: 400px; width: 500px">
+      <v-chart :option="radarOption" style="height: 100%; width: 100%" autoresize/>
     </n-card>
-    <n-card style="height: 400px; width: 30%">
+    <n-card style="height: 400px; width: 500px">
       <HabitRateHeatmap :items="habitItems"/>
     </n-card>
   </n-card>
