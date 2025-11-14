@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import {apis} from "../api/pb.ts";
 import {useLoadingBar} from "naive-ui";
 import dayjs from 'dayjs';
 import {batchFillClockDaysDesc} from "../util/dayUtil.ts";
 import {doAndOnHabitRefreshEvent} from "../bus/bm.ts";
 import {slidingWindowSum} from "../util/numberUtil.ts";
-
+import {mean} from 'mathjs';
+import HabitRateHeatmap from "../components/HabitRateHeatmap.vue";
 
 const loadingBar = useLoadingBar();
 
@@ -60,6 +61,33 @@ const radarOption = ref<any>({
     }
   ]
 });
+const habitItems = ref<any>();
+
+function meanType(theMean: number) {
+  if (theMean > 80) {
+    return 'success';
+  }
+  if (theMean > 60) {
+    return 'info';
+  }
+  if (theMean > 20) {
+    return 'warning';
+  }
+  return 'error';
+}
+
+const meanTotal = computed(() => {
+  return Number(mean(radarOption.value.series[0].data[0].value)).toFixed(2);
+});
+const meanCurrent = computed(() => {
+  return Number(mean(radarOption.value.series[0].data[1].value)).toFixed(2);
+});
+const meanTotalType = computed(() => {
+  return meanType(meanTotal.value);
+});
+const meanCurrentType = computed(() => {
+  return meanType(meanCurrent.value);
+});
 
 function refresh(weeks: number = 5) {
   loadingBar.start();
@@ -74,14 +102,14 @@ function refresh(weeks: number = 5) {
     const fillItems = batchFillClockDaysDesc(items, weeks);
     for (let item of fillItems) {
       item['numbersSliding'] = slidingWindowSum(item.numbers, item.cycle_day);
-      item['rate'] = item['numbersSliding'].map((num: number) => Number(num / item.frequency * 100).toFixed(2));
-      const indexOf = item.clock_days.indexOf(dayjs(item.habit_created).format('YYYY-MM-DD'));
-      let avg: number = 0;
+      item['rate'] = item['numbersSliding'].map((num: number) => Number(Math.min(num / item.frequency * 100, 100)).toFixed(2));
+      const indexOf = item.clock_days.split(',').indexOf(dayjs(item.habit_created).format('YYYY-MM-DD'));
+      let avg: number = 0, sum: number = 0;
       if (indexOf >= 0) {
-        const sum = item['rate'].slice(0, indexOf + 1).reduce((a: number, b: number) => Number(a) + Number(b));
-        avg = Number(Number(Number(sum) / Math.min(indexOf + 1, avgDays.value)).toFixed(2));
+        const index = indexOf + 1;
+        sum = item['rate'].slice(0, index).reduce((a: number, b: number) => Number(a) + Number(b));
+        avg = Number(Number(Number(sum) / Math.min(index, avgDays.value)).toFixed(2));
       }
-
       avgRate.push(avg);
       dayRate.push(item['rate'][0]);
       indicator.push({name: item.habit_name, max: 100});
@@ -90,6 +118,7 @@ function refresh(weeks: number = 5) {
     radarOption.value.radar.indicator = indicator;
     radarOption.value.series[0].data[0].value = avgRate;
     radarOption.value.series[0].data[1].value = dayRate;
+    habitItems.value = fillItems;
   }).catch((e: any) => {
     loadingBar.error();
     throw e;
@@ -102,8 +131,29 @@ doAndOnHabitRefreshEvent(refresh);
 </script>
 
 <template>
-  <n-card style="height: 400px; width: 30%">
-    <v-chart :option="radarOption" style="height: 100%; width: 100%"/>
+  <n-card style="width: 100%;">
+    <n-card style="width: 30%;">
+      <n-table
+          :bottom-bordered="false" :bordered="false" :single-column="true">
+        <n-tr>
+          <n-th>总评分</n-th>
+          <n-th>今日评分</n-th>
+        </n-tr>
+        <n-tr>
+          <n-td>
+            <n-gradient-text font-size="50" :type="meanTotalType">{{ meanTotal }}</n-gradient-text>
+          </n-td>
+          <n-td>
+            <n-gradient-text font-size="50" :type="meanCurrentType">{{ meanCurrent }}</n-gradient-text>
+          </n-td>
+        </n-tr>
+      </n-table>
+    </n-card>
+    <n-card style="height: 400px; width: 30%">
+      <v-chart :option="radarOption" style="height: 100%; width: 100%"/>
+    </n-card>
+    <n-card style="height: 400px; width: 30%">
+      <HabitRateHeatmap :items="habitItems"/>
+    </n-card>
   </n-card>
-
 </template>
